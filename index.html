@@ -7,81 +7,159 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9f8f6;color:#1a1a18;min-height:100vh;padding:2rem 1rem}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9f8f6;color:#1a1a18;min-height:100vh;padding:1.25rem .875rem}
 .wrap{max-width:1000px;margin:0 auto}
-h1{font-size:22px;font-weight:500;margin-bottom:4px}
-.sub{font-size:12px;color:#6b6b67;margin-bottom:1rem}
-.banner{background:#EBF4FF;border:.5px solid #B5D4F4;border-radius:8px;padding:10px 14px;font-size:12px;color:#0C447C;margin-bottom:1rem;line-height:1.5}
+h1{font-size:20px;font-weight:500;margin-bottom:3px;line-height:1.3}
+.sub{font-size:11px;color:#6b6b67;margin-bottom:.875rem;line-height:1.5}
+.banner{background:#EBF4FF;border:.5px solid #B5D4F4;border-radius:8px;padding:10px 13px;font-size:11px;color:#0C447C;margin-bottom:.875rem;line-height:1.5}
+
+/* Search */
 .swrap{position:relative;margin-bottom:.75rem}
-.swrap input{width:100%;padding:10px 14px 10px 38px;font-size:14px;border-radius:8px;border:.5px solid #c8c6bc;background:#fff;color:#1a1a18}
+.swrap input{width:100%;padding:12px 14px 12px 40px;font-size:16px;border-radius:10px;border:.5px solid #c8c6bc;background:#fff;color:#1a1a18;-webkit-appearance:none;appearance:none}
 .swrap input:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1)}
-.si{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
-.sugs{position:absolute;top:42px;left:0;right:0;background:#fff;border:.5px solid #c8c6bc;border-radius:8px;z-index:99;display:none;max-height:200px;overflow-y:auto;box-shadow:0 6px 20px rgba(0,0,0,.1)}
-.sg{padding:10px 16px;font-size:13px;cursor:pointer;color:#1a1a18;border-bottom:.5px solid #eee}
+.si{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+.sugs{position:absolute;top:48px;left:0;right:0;background:#fff;border:.5px solid #c8c6bc;border-radius:10px;z-index:99;display:none;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.sg{padding:13px 16px;font-size:15px;cursor:pointer;color:#1a1a18;border-bottom:.5px solid #eee;min-height:44px;display:flex;align-items:center}
 .sg:last-child{border-bottom:none}
 .sg:hover,.sg.hi{background:#f1efe8}
-.frow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
-.frow select{font-size:12px;padding:6px 10px;height:32px;border-radius:8px;border:.5px solid #c8c6bc;background:#fff;color:#1a1a18;cursor:pointer}
-.fl{font-size:11px;color:#6b6b67}
-.glbl{font-size:11px;font-weight:600;color:#6b6b67;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
-.gal{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-bottom:1.25rem;scrollbar-width:thin}
-.gal::-webkit-scrollbar{height:5px}
-.gal::-webkit-scrollbar-thumb{background:#c8c6bc;border-radius:3px}
-.ct{flex:0 0 112px;cursor:pointer;border-radius:10px;border:2.5px solid transparent;padding:7px;text-align:center;background:#fff;transition:border-color .15s,transform .15s;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.ct:hover{transform:translateY(-3px);border-color:#85B7EB}
+
+/* Filters */
+.frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.frow select{font-size:13px;padding:8px 10px;height:38px;border-radius:8px;border:.5px solid #c8c6bc;background:#fff;color:#1a1a18;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:26px;flex:1;min-width:0}
+.fl{font-size:11px;color:#6b6b67;white-space:nowrap}
+
+/* Gallery */
+.glbl{font-size:11px;font-weight:600;color:#6b6b67;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.gal{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.gal::-webkit-scrollbar{height:4px}
+.gal::-webkit-scrollbar-thumb{background:#c8c6bc;border-radius:2px}
+.ct{flex:0 0 100px;cursor:pointer;border-radius:10px;border:2.5px solid transparent;padding:6px;text-align:center;background:#fff;transition:border-color .15s;box-shadow:0 1px 4px rgba(0,0,0,.06);-webkit-tap-highlight-color:transparent}
 .ct.active{border-color:#185FA5;background:#EBF4FF}
-.ct-img-wrap{width:100%;height:90px;border-radius:6px;overflow:hidden;background:#f1efe8;display:flex;align-items:center;justify-content:center}
+.ct-img-wrap{width:100%;height:82px;border-radius:6px;overflow:hidden;background:#f1efe8;display:flex;align-items:center;justify-content:center}
 .ct-img-wrap img{width:100%;height:100%;object-fit:contain;display:block}
-.ct-img-wrap .ph{font-size:30px;line-height:1}
+.ct-img-wrap .ph{font-size:28px;line-height:1}
 .ct-img-wrap .ph.spin{animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.ctn{font-size:10px;color:#5f5e5a;margin-top:5px;line-height:1.3;font-weight:500}
+.ctn{font-size:10px;color:#5f5e5a;margin-top:4px;line-height:1.3;font-weight:500}
 .cts{font-size:9px;color:#888780;margin-top:1px}
-.hero{display:flex;gap:18px;margin-bottom:1.25rem;align-items:flex-start;flex-wrap:wrap;background:#fff;border-radius:14px;border:.5px solid #d3d1c7;padding:1.25rem}
-.himg-wrap{flex:0 0 130px;width:130px;height:182px;border-radius:10px;overflow:hidden;background:#f1efe8;display:flex;align-items:center;justify-content:center}
+
+/* Hero card */
+.hero{display:flex;gap:14px;margin-bottom:1rem;align-items:flex-start;background:#fff;border-radius:14px;border:.5px solid #d3d1c7;padding:1rem}
+.himg-wrap{flex:0 0 100px;width:100px;height:140px;border-radius:8px;overflow:hidden;background:#f1efe8;display:flex;align-items:center;justify-content:center}
 .himg-wrap img{width:100%;height:100%;object-fit:contain}
-.himg-wrap .hph{font-size:54px;animation:pulse 1.2s ease-in-out infinite}
-.hbody{flex:1;min-width:180px}
-.hn{font-size:18px;font-weight:500;color:#1a1a18;margin-bottom:3px}
-.hs{font-size:12px;color:#6b6b67;margin-bottom:10px}
-.hbdg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
-.b{display:inline-block;font-size:10px;padding:3px 9px;border-radius:12px;font-weight:600}
+.himg-wrap .hph{font-size:44px;animation:pulse 1.2s ease-in-out infinite}
+.hbody{flex:1;min-width:0}
+.hn{font-size:16px;font-weight:500;color:#1a1a18;margin-bottom:2px;line-height:1.3}
+.hs{font-size:11px;color:#6b6b67;margin-bottom:8px;line-height:1.4}
+.hbdg{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.b{display:inline-block;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600}
 .bull{background:#EAF3DE;color:#3B6D11}
 .bear{background:#FCEBEB;color:#A32D2D}
 .neu{background:#f1efe8;color:#5f5e5a}
 .inf{background:#E6F1FB;color:#185FA5}
-.hnote{font-size:11.5px;color:#6b6b67;line-height:1.6;font-style:italic}
-.src{font-size:10px;color:#888780;margin-top:6px}
-.mets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
-.met{background:#f1efe8;border-radius:9px;padding:11px 14px}
-.ml{font-size:10px;color:#6b6b67;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.mv{font-size:19px;font-weight:500;color:#1a1a18}
-.md{font-size:11px;margin-top:2px}
+.hnote{font-size:11px;color:#6b6b67;line-height:1.55;font-style:italic}
+.src{font-size:10px;color:#888780;margin-top:5px;line-height:1.4}
+
+/* Metric cards */
+.mets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem}
+.met{background:#f1efe8;border-radius:9px;padding:10px 12px}
+.ml{font-size:10px;color:#6b6b67;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.mv{font-size:18px;font-weight:500;color:#1a1a18}
+.md{font-size:11px;margin-top:1px}
 .up{color:#2d7a2d}.dn{color:#a32d2d}
-.chdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
-.ctl{font-size:13px;font-weight:500;color:#1a1a18}
+
+/* Chart */
+.chdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.ctl{font-size:12px;font-weight:500;color:#1a1a18}
 .tbs{display:flex;gap:4px}
-.tb{font-size:11px;padding:4px 10px;border-radius:7px;border:.5px solid #c8c6bc;background:#fff;color:#6b6b67;cursor:pointer}
+.tb{font-size:12px;padding:6px 11px;border-radius:7px;border:.5px solid #c8c6bc;background:#fff;color:#6b6b67;cursor:pointer;min-height:34px;-webkit-tap-highlight-color:transparent}
 .tb.active{background:#f1efe8;color:#1a1a18;border-color:#888780}
-.cw{position:relative;width:100%;height:280px;background:#fff;border-radius:12px;border:.5px solid #d3d1c7;padding:1rem}
-.leg{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
-.li{display:flex;align-items:center;gap:5px;font-size:11px;color:#6b6b67}
-.ll{width:16px;height:3px;border-radius:2px}
+.cw{position:relative;width:100%;height:240px;background:#fff;border-radius:12px;border:.5px solid #d3d1c7;padding:.875rem}
+.leg{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:4px;font-size:11px;color:#6b6b67}
+.ll{width:14px;height:3px;border-radius:2px}
+
+/* Divider + section titles */
 .dv{height:.5px;background:#d3d1c7;margin:1.25rem 0}
 .ttl{font-size:13px;font-weight:500;color:#1a1a18;margin-bottom:10px}
-.tbl{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:12px;border:.5px solid #d3d1c7;overflow:hidden}
-.tbl th{text-align:left;padding:9px 11px;color:#6b6b67;font-weight:400;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:.5px solid #d3d1c7;background:#f9f8f6}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:.5px solid #d3d1c7}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;background:#fff}
+.tbl th{text-align:left;padding:9px 11px;color:#6b6b67;font-weight:400;font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:.5px solid #d3d1c7;background:#f9f8f6;white-space:nowrap}
 .tbl td{padding:10px 11px;border-bottom:.5px solid #eeeee8;color:#1a1a18;vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:hover td{background:#f9f8f6;cursor:pointer}
 .tup{color:#2d7a2d;font-weight:500}.tdn{color:#a32d2d;font-weight:500}.tfl{color:#6b6b67}
-.timg-wrap{width:40px;height:32px;border-radius:4px;overflow:hidden;background:#f1efe8;display:inline-flex;align-items:center;justify-content:center}
+.timg-wrap{width:38px;height:30px;border-radius:4px;overflow:hidden;background:#f1efe8;display:inline-flex;align-items:center;justify-content:center}
 .timg-wrap img{width:100%;height:100%;object-fit:contain}
-.tph{font-size:16px}
+.tph{font-size:15px}
+
+/* Outlook sections */
 .fn{font-size:10px;color:#888780;margin-top:1.25rem;padding-top:1rem;border-top:.5px solid #d3d1c7;line-height:1.7}
-@media(max-width:600px){
-  .mets{grid-template-columns:repeat(2,1fr)}
-  .tbl th:nth-child(3),.tbl td:nth-child(3),.tbl th:nth-child(6),.tbl td:nth-child(6){display:none}
+.outlook-hdr{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+.outlook-icon{width:32px;height:32px;border-radius:50%;background:#EAF3DE;color:#3B6D11;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.bear-icon{background:#FCEBEB;color:#A32D2D}
+.outlook-title{font-size:14px;font-weight:500;color:#1a1a18}
+.outlook-sub{font-size:11px;color:#6b6b67;margin-top:2px}
+.outlook-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ocard{background:#fff;border-radius:12px;border:.5px solid #d3d1c7;padding:13px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:box-shadow .15s}
+.ocard:active{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.ocard-top{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.ocard-img{width:48px;height:48px;border-radius:6px;background:#f1efe8;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ocard-img img{width:100%;height:100%;object-fit:contain}
+.ocard-name{font-size:12px;font-weight:500;color:#1a1a18;margin-bottom:1px;line-height:1.3}
+.ocard-set{font-size:10px;color:#6b6b67;line-height:1.3}
+.ocard-reason{font-size:11px;color:#5f5e5a;line-height:1.5;margin-bottom:10px;font-style:italic}
+.intervals{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.interval{background:#f9f8f6;border-radius:6px;padding:7px 6px;text-align:center}
+.int-label{font-size:9px;color:#888780;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.int-val{font-size:12px;font-weight:500;color:#1a1a18}
+.int-delta{font-size:10px;margin-top:1px}
+.int-up{color:#2d7a2d}.int-dn{color:#a32d2d}
+
+/* Mobile-specific overrides */
+@media(max-width:480px){
+  body{padding:1rem .75rem}
+  h1{font-size:18px}
+  .frow{gap:5px}
+  .frow select{font-size:12px;height:36px;flex:1 1 calc(50% - 5px)}
+  .fl{display:none}
+  .ct{flex:0 0 88px}
+  .ct-img-wrap{height:72px}
+  .hero{padding:.875rem}
+  .himg-wrap{flex:0 0 84px;width:84px;height:118px}
+  .hn{font-size:14px}
+  .cw{height:200px;padding:.75rem}
+  .tb{font-size:11px;padding:5px 8px}
+  .tbl th:nth-child(3),.tbl td:nth-child(3){display:none}
+  .tbl th:nth-child(6),.tbl td:nth-child(6){display:none}
+  .outlook-grid{grid-template-columns:1fr}
+  .intervals{gap:4px}
+  .int-val{font-size:11px}
+}
+
+/* Tablet */
+@media(min-width:481px) and (max-width:768px){
+  .mets{grid-template-columns:repeat(4,1fr)}
+  .outlook-grid{grid-template-columns:repeat(2,1fr)}
+  .tbl th:nth-child(6),.tbl td:nth-child(6){display:none}
+}
+
+/* Desktop */
+@media(min-width:769px){
+  body{padding:2rem 1.5rem}
+  h1{font-size:22px}
+  .mets{grid-template-columns:repeat(4,1fr)}
+  .ct{flex:0 0 112px}
+  .ct-img-wrap{height:90px}
+  .cw{height:280px}
+  .himg-wrap{flex:0 0 130px;width:130px;height:182px}
+  .hn{font-size:18px}
+  .frow select{flex:none;font-size:12px}
+  .fl{display:block}
+  .ocard:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+  .ct:hover{border-color:#85B7EB}
 }
 </style>
 </head>
@@ -113,9 +191,12 @@ h1{font-size:22px;font-weight:500;margin-bottom:4px}
       <option value="vangogh">Van Gogh Promo (2023)</option>
       <option value="ascendedheroes">Ascended Heroes (2026)</option>
     </select>
-    <select id="fG" onchange="updateM();renderC();renderT()">
+    <select id="fG" onchange="updateM();renderC();renderT(getDropdownF());renderOutlooks()">
       <option value="psa10">PSA 10</option>
       <option value="psa9">PSA 9</option>
+      <option value="psa8">PSA 8</option>
+      <option value="psa7">PSA 7</option>
+      <option value="psa6">PSA 6</option>
       <option value="raw">Raw / Ungraded</option>
     </select>
     <select id="fC" onchange="applyF()">
@@ -167,7 +248,31 @@ h1{font-size:22px;font-weight:500;margin-bottom:4px}
   </div>
 
   <div class="dv"></div>
+
+  <!-- OUTLOOK SECTIONS -->
+  <div class="outlook-hdr bull-hdr">
+    <div class="outlook-icon">↑</div>
+    <div>
+      <div class="outlook-title">Most bullish picks</div>
+      <div class="outlook-sub">Cards with the strongest projected appreciation over the next 18 months (PSA 10)</div>
+    </div>
+  </div>
+  <div class="outlook-grid" id="bullGrid"></div>
+
+  <div class="dv"></div>
+
+  <div class="outlook-hdr bear-hdr">
+    <div class="outlook-icon bear-icon">↓</div>
+    <div>
+      <div class="outlook-title">Caution — declining or at risk</div>
+      <div class="outlook-sub">Cards showing weakness, correction risk, or stalled momentum (PSA 10)</div>
+    </div>
+  </div>
+  <div class="outlook-grid" id="bearGrid"></div>
+
+  <div class="dv"></div>
   <div class="ttl">All tracked cards</div>
+  <div class="tbl-wrap">
   <table class="tbl">
     <thead><tr>
       <th style="width:50px">Art</th>
@@ -177,6 +282,7 @@ h1{font-size:22px;font-weight:500;margin-bottom:4px}
     </tr></thead>
     <tbody id="tbody"></tbody>
   </table>
+  </div>
 
   <div class="fn">
     All prices verified April 2026 from actual completed sales on eBay, TCGPlayer market price, PriceCharting, Sports Card Investor, CardCodex, and Cardrake. Projections use exponential smoothing + linear trend regression weighted by recency, adjusted for PSA population reports, reprint risk, and Pokémon anniversary tailwinds. This is not financial advice — always verify with current sold listings before buying or selling.
@@ -208,7 +314,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:420000},{l:'Apr 2027',v:460000},{l:'Oct 2027',v:500000}],
     outlook:'bull', trend:12,
-    gm:{psa10:1, psa9:0.055, raw:0.021},
+    gm:{psa10:1, psa9:0.055, psa8:0.022, psa7:0.012, psa6:0.007, raw:0.021},
     source:'Heritage Auctions Dec 2025 ($550k record); misprint.com Apr 2026; PSA pop: only 122 PSA 10s exist',
     note:'Undisputed holy grail — only 122 PSA 10s exist from 3,000+ submissions. Dec 2025 Heritage Auctions set record at $550k. Comps currently $350–420k. PSA 9 $18–25k. Raw LP-NM $5–12k. 30th anniversary driving renewed demand.'
   },
@@ -227,7 +333,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:40000},{l:'Apr 2027',v:44000},{l:'Oct 2027',v:48000}],
     outlook:'bull', trend:6,
-    gm:{psa10:1, psa9:0.12, raw:0.05},
+    gm:{psa10:1, psa9:0.12, psa8:0.06, psa7:0.035, psa6:0.02, raw:0.05},
     source:'cardgrader.ai Feb 2026; pokescope.app Mar 2026',
     note:'PSA 10 $25–50k. Raw copies $925–$3,400 depending on condition. First English print run — shadowless border. structurally scarce, no new copies can enter. Undervalued vs 1st Ed at current ratios per market analysts.'
   },
@@ -245,7 +351,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:450},{l:'Apr 2027',v:500},{l:'Oct 2027',v:560}],
     outlook:'bull', trend:5,
-    gm:{psa10:1, psa9:0.65, raw:0.35},
+    gm:{psa10:1, psa9:0.65, psa8:0.42, psa7:0.28, psa6:0.18, raw:0.35},
     source:'misprint.com Apr 2026; pokemonpricetracker.com Feb 2026 ($234 raw)',
     note:'PSA 10 ~$350–480. Raw NM ~$120–170 (misprint.com Apr 2026). Corrected significantly from $2,200 ATH. Now stabilized at a floor. Kanto nostalgia + Charizard premium means this will be a long-term hold — just not at peak prices.'
   },
@@ -265,7 +371,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:240},{l:'Apr 2027',v:260},{l:'Oct 2027',v:285}],
     outlook:'neutral', trend:-3,
-    gm:{psa10:1, psa9:0.62, raw:0.22},
+    gm:{psa10:1, psa9:0.62, psa8:0.38, psa7:0.22, psa6:0.14, raw:0.22},
     source:'PriceCharting / TCGPlayer historical comps',
     note:'PSA 10 ~$230, raw ~$50. Post-boom correction appears to have found a floor. Standard rotation out of competitive play confirmed. Long-term Charizard brand prevents further meaningful decline.'
   },
@@ -285,7 +391,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:2000},{l:'Apr 2027',v:2200},{l:'Oct 2027',v:2500}],
     outlook:'bull', trend:8,
-    gm:{psa10:1, psa9:0.58, raw:0.57},
+    gm:{psa10:1, psa9:0.58, psa8:0.36, psa7:0.22, psa6:0.14, raw:0.57},
     source:'Sports Card Investor Apr 8 2026 (raw last sold $1,055, -15.5% past 30d); wargamer.com Jan 2025 (PSA 10 ~$3k); Cardrake Apr 2026',
     note:'Raw last sold $1,055 (Apr 8 2026, Sports Card Investor). PSA 10 ~$1,850. Down from ATH of ~$3,000 PSA 10 / ~$1,500 raw in late 2025. PSA 10 copies trade 1.5–2x raw (Cardrake). Eeveelution demand structural — pull rate ~1 in 400–500 packs.'
   },
@@ -304,7 +410,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:2200},{l:'Apr 2027',v:2400},{l:'Oct 2027',v:2700}],
     outlook:'neutral', trend:3,
-    gm:{psa10:1, psa9:0.55, raw:0.35},
+    gm:{psa10:1, psa9:0.55, psa8:0.33, psa7:0.20, psa6:0.12, raw:0.35},
     source:'wargamer.com Mar 12 2025 (PSA 10 $2,900 on Mar 10 2026); pokemonpricetracker.com (raw ~$882)',
     note:'PSA 10 ~$2,500 (down from $4,000 Feb 2025 peak, last eBay sale $2,900 Mar 10 2026). Raw ~$882 (down from $1,550 April 2025 peak). Pull rate ~1 in 1,440 packs. Market stabilizing after steep correction — Eeveelution brand provides long-term floor.'
   },
@@ -322,7 +428,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:3200},{l:'Apr 2027',v:3800},{l:'Oct 2027',v:4500}],
     outlook:'bull', trend:28,
-    gm:{psa10:1, psa9:0.65, raw:0.31},
+    gm:{psa10:1, psa9:0.65, psa8:0.40, psa7:0.25, psa6:0.15, raw:0.31},
     source:'card-codex.com (raw $1,099; PSA 10 $3,250); CardChill Feb 2026 ($1,231 raw launch); Athlon Sports Feb 2026 (PSA 10 $3,942)',
     note:'PSA 10 ~$3,500. Raw NM ~$1,075. The undisputed crown jewel of Ascended Heroes. Pull rate ~1 in 650 packs (~1 per 18 boxes). Shadowy Concealment ability drives competitive AND collector demand. "Ghost King" — Gen 1 icon with first Mega Gengar since XY era.'
   },
@@ -342,7 +448,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:2800},{l:'Apr 2027',v:3100},{l:'Oct 2027',v:3400}],
     outlook:'bull', trend:15,
-    gm:{psa10:1, psa9:0.6, raw:0.32},
+    gm:{psa10:1, psa9:0.6, psa8:0.38, psa7:0.24, psa6:0.15, raw:0.32},
     source:'Sports Card Investor Apr 6 2026 (raw last sold $841, +22.5% past 30d); vice.com Mar 2026 (PSA 10 ~$2,600)',
     note:'PSA 10 ~$2,600 (vice.com Mar 2026). Raw up sharply to ~$841 (+22.5% past 30 days, Sports Card Investor Apr 6). New ATH territory. Museum exclusivity — Pikachu in Van Gogh impressionist style. One of the most photogenic cards ever made.'
   },
@@ -360,7 +466,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:2700},{l:'Apr 2027',v:3000},{l:'Oct 2027',v:3300}],
     outlook:'bull', trend:14,
-    gm:{psa10:1, psa9:0.6, raw:0.34},
+    gm:{psa10:1, psa9:0.6, psa8:0.38, psa7:0.24, psa6:0.15, raw:0.34},
     source:'comicbook.com Apr 5 2026 (PSA 10 ~$2,500 from Apr 4 sale; raw $850+)',
     note:'PSA 10 ~$2,500 confirmed sale April 4 2026 (comicbook.com). Raw $850+. Strongest sustained momentum of any modern promo. Scalper-driven museum chaos cemented scarcity narrative. This is a different variant from the Van Gogh Pikachu above — verify which card you have.'
   },
@@ -382,7 +488,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:560},{l:'Apr 2027',v:610},{l:'Oct 2027',v:660}],
     outlook:'bull', trend:7,
-    gm:{psa10:1, psa9:0.65, raw:0.19},
+    gm:{psa10:1, psa9:0.65, psa8:0.40, psa7:0.24, psa6:0.14, raw:0.19},
     source:'PriceCharting / eBay sold listings; TCGplayer market data',
     note:'PSA 10 ~$530. Raw ~$100. Legends Z-A Mega Evolution return driving renewed demand. Mini-buyout Aug 2024 signaled fresh collector interest. Full Art is the premium version — distinct from the regular art Rayquaza-EX.'
   },
@@ -402,7 +508,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:295},{l:'Apr 2027',v:310},{l:'Oct 2027',v:325}],
     outlook:'neutral', trend:-2,
-    gm:{psa10:1, psa9:0.65, raw:0.28},
+    gm:{psa10:1, psa9:0.65, psa8:0.42, psa7:0.27, psa6:0.17, raw:0.28},
     source:'TCGplayer market price; PriceCharting historical data',
     note:'PSA 10 ~$285. Raw ~$80. Pre-pandemic print run — becoming genuinely hard to find in PSA 10. TCGplayer analysts note a solid floor: "will never be worth less than $250 in PSA 10." Stable hold, not a growth play.'
   },
@@ -421,7 +527,7 @@ const CARDS = [
     ],
     proj:[{l:'Oct 2026',v:265},{l:'Apr 2027',v:285},{l:'Oct 2027',v:310}],
     outlook:'bull', trend:5,
-    gm:{psa10:1, psa9:0.62, raw:0.25},
+    gm:{psa10:1, psa9:0.62, psa8:0.40, psa7:0.25, psa6:0.15, raw:0.25},
     source:'PokemonPriceTracker Q1 2026 report; PriceCharting historical',
     note:'PSA 10 ~$255. Raw ~$65. Dec 2025 buyout briefly pushed to $285 — TAQ TEAM era entering scarcity cycle as population growth flattens. Mewtwo nostalgia is a durable demand driver.'
   }
@@ -484,27 +590,54 @@ function setImgEl(wrap, src, emoji) {
   }
 }
 
-function getF() {
+// Returns cards filtered by set/category dropdowns only (not search)
+function getDropdownF() {
   const s = document.getElementById('fS').value;
   const cat = document.getElementById('fC').value;
-  const q = document.getElementById('q').value.trim().toLowerCase();
   return CARDS.filter(c =>
     (s === 'all' || c.set === s) &&
-    (cat === 'all' || c.cat === cat) &&
-    (!q || c.pokemon.toLowerCase().includes(q) || c.name.toLowerCase().includes(q) || c.short.toLowerCase().includes(q))
+    (cat === 'all' || c.cat === cat)
   );
+}
+
+// Returns cards filtered by search query AND dropdowns
+function getF() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const base = getDropdownF();
+  if (!q) return base;
+  // Exact pokemon name match first, then broader name/short match
+  const exact = base.filter(c => c.pokemon.toLowerCase() === q);
+  if (exact.length) return exact;
+  return base.filter(c =>
+    c.pokemon.toLowerCase().includes(q) ||
+    c.name.toLowerCase().includes(q) ||
+    c.short.toLowerCase().includes(q)
+  );
+}
+
+// True if the search box has a meaningful query entered
+function hasSearch() {
+  return document.getElementById('q').value.trim().length > 0;
 }
 
 function onQ() {
   const q = document.getElementById('q').value.trim().toLowerCase();
   const el = document.getElementById('sugs');
   sugI = -1;
-  if (!q) { el.style.display = 'none'; applyF(); return; }
+  if (!q) {
+    el.style.display = 'none';
+    // Clear gallery back to prompt state when search is cleared
+    renderGal([]);
+    renderT(getDropdownF());
+    return;
+  }
   const m = POKE.filter(p => p.toLowerCase().includes(q));
-  if (!m.length) { el.style.display = 'none'; applyF(); return; }
+  if (!m.length) { el.style.display = 'none'; renderGal(getF()); renderT(getF()); return; }
   el.innerHTML = m.slice(0,8).map(p => `<div class="sg" data-v="${p}" onclick="pickSug('${p}')">${p}</div>`).join('');
   el.style.display = 'block';
-  applyF();
+  // Show filtered gallery as user types
+  renderGal(getF());
+  renderT(getF());
 }
 function onQK(e) {
   const el = document.getElementById('sugs');
@@ -514,32 +647,51 @@ function onQK(e) {
   else if (e.key === 'Enter' && sugI >= 0 && items[sugI]) pickSug(items[sugI].dataset.v);
   else if (e.key === 'Escape') el.style.display = 'none';
 }
-function pickSug(v) { document.getElementById('q').value = v; document.getElementById('sugs').style.display = 'none'; applyF(); }
+function pickSug(v) {
+  document.getElementById('q').value = v;
+  document.getElementById('sugs').style.display = 'none';
+  applyF();
+}
 document.addEventListener('click', e => { if (!e.target.closest('.swrap')) document.getElementById('sugs').style.display = 'none'; });
 
 function applyF() {
-  const f = getF();
+  const searched = hasSearch();
+  const f = searched ? getF() : [];
   renderGal(f);
-  renderT(f);
-  if (active && !f.find(c => c.id === active.id)) pick(f[0] || null);
+  renderT(getDropdownF());
+  if (active && searched && !f.find(c => c.id === active.id)) pick(f[0] || null);
 }
 
 function renderGal(cards) {
   const g = document.getElementById('gal');
   const lbl = document.getElementById('glbl');
-  if (!cards.length) {
-    g.innerHTML = '<div style="font-size:13px;color:#6b6b67;padding:8px 0">No cards match your filters.</div>';
-    lbl.textContent = 'No results';
+
+  // No search entered — show prompt
+  if (!hasSearch()) {
+    lbl.textContent = 'Search for a Pokemon above to see its variants';
+    g.innerHTML = `<div style="font-size:13px;color:#6b6b67;padding:10px 0;font-style:italic">
+      Try searching "Charizard", "Umbreon", "Pikachu", or any other Pokemon name
+    </div>`;
     return;
   }
-  lbl.textContent = `${cards.length} variant${cards.length===1?'':'s'} — click to select`;
+
+  if (!cards.length) {
+    lbl.textContent = 'No cards found';
+    g.innerHTML = '<div style="font-size:13px;color:#6b6b67;padding:8px 0">No cards match your search. Try a different name.</div>';
+    return;
+  }
+
+  lbl.textContent = `${cards.length} variant${cards.length===1?'':'s'} of ${cards[0].pokemon} — click to select`;
   g.innerHTML = cards.map(c => `
     <div class="ct${active && active.id===c.id ? ' active' : ''}" id="th_${c.id}" onclick="pick(CARDS.find(x=>x.id==='${c.id}'))" title="${c.name}">
       <div class="ct-img-wrap" id="thw_${c.id}"><span class="ph spin">${c.emoji}</span></div>
       <div class="ctn">${c.short}</div>
       <div class="cts">${c.setName}</div>
     </div>`).join('');
-  if (!active && cards.length) pick(cards[0]);
+
+  // Auto-select first card if nothing active or active isn't in this filtered set
+  if (cards.length && (!active || !cards.find(c => c.id === active.id))) pick(cards[0]);
+
   cards.forEach(c => fetchImg(c).then(src => setImgEl(document.getElementById('thw_' + c.id), src, c.emoji)));
 }
 
@@ -550,6 +702,14 @@ async function pick(card) {
     return;
   }
   active = card;
+  // If search box doesn't match this card's pokemon, update it so gallery shows variants
+  const qEl = document.getElementById('q');
+  if (qEl.value.trim().toLowerCase() !== card.pokemon.toLowerCase()) {
+    qEl.value = card.pokemon;
+    // Re-render gallery to show all variants of this pokemon
+    const variants = getF();
+    renderGal(variants);
+  }
   document.getElementById('hero').style.display = 'flex';
   document.getElementById('mets').style.display = 'grid';
   document.getElementById('csec').style.display = 'block';
@@ -625,10 +785,10 @@ function renderC() {
 }
 
 function renderT(cards) {
-  const g = document.getElementById('fG').value;
+  if (!cards) cards = getDropdownF();
   const tb = document.getElementById('tbody');
   tb.innerHTML = '';
-  (cards || getF()).forEach(c => {
+  cards.forEach(c => {
     const rawCur = Math.round(rawV(c));
     const psa10Cur = c.history[c.history.length-1].v;
     const p12psa10 = c.proj[1]?.v || psa10Cur;
@@ -651,7 +811,120 @@ function renderT(cards) {
   });
 }
 
-applyF();
+// Initial page load: show search prompt in gallery, show all cards in table
+renderGal([]);
+renderT(CARDS);
+renderOutlooks();
+
+function renderOutlooks() {
+  const gradeVal = document.getElementById('fG').value;
+  const gradeLabel = { psa10: 'PSA 10', psa9: 'PSA 9', psa8: 'PSA 8', psa7: 'PSA 7', psa6: 'PSA 6', raw: 'Raw / Ungraded' }[gradeVal];
+
+  function gm(card) { return card.gm[gradeVal] || 1; }
+  function applyGrade(v, card) { return Math.round(v * gm(card)); }
+
+  function getIntervals(card) {
+    const cur = card.history[card.history.length-1].v;
+    const p = card.proj;
+    return [
+      { label: '+6 months',  v: applyGrade(p[0]?.v || cur, card) },
+      { label: '+12 months', v: applyGrade(p[1]?.v || p[0]?.v || cur, card) },
+      { label: '+18 months', v: applyGrade(p[2]?.v || p[1]?.v || p[0]?.v || cur, card) }
+    ];
+  }
+
+  function pct(from, to) { return (((to - from) / from) * 100).toFixed(1); }
+
+  // Use grade-adjusted current value for % calculations
+  function curGraded(card) { return Math.round(card.history[card.history.length-1].v * gm(card)); }
+
+  // Bull picks: sorted by 12-month % gain descending, top 4
+  const bulls = [...CARDS]
+    .filter(c => c.outlook === 'bull')
+    .map(c => {
+      const cur = curGraded(c);
+      const p12 = applyGrade(c.proj[1]?.v || c.proj[0]?.v || c.history[c.history.length-1].v, c);
+      return { card: c, gain12: parseFloat(pct(cur, p12)) };
+    })
+    .sort((a, b) => b.gain12 - a.gain12)
+    .slice(0, 4);
+
+  // Bear/caution picks: neutral or bear outlook or negative trend, worst performers first, top 3
+  const bears = [...CARDS]
+    .filter(c => c.outlook === 'bear' || c.outlook === 'neutral' || c.trend < 0)
+    .map(c => {
+      const cur = curGraded(c);
+      const p12 = applyGrade(c.proj[1]?.v || c.proj[0]?.v || c.history[c.history.length-1].v, c);
+      return { card: c, gain12: parseFloat(pct(cur, p12)) };
+    })
+    .sort((a, b) => a.gain12 - b.gain12)
+    .slice(0, 3);
+
+  // Update section subtitles to show current grade
+  document.querySelector('.bull-hdr .outlook-sub').textContent =
+    `Cards with the strongest projected appreciation over the next 18 months (${gradeLabel})`;
+  document.querySelector('.bear-hdr .outlook-sub').textContent =
+    `Cards showing weakness, correction risk, or stalled momentum (${gradeLabel})`;
+
+  function buildCard(item) {
+    const c = item.card;
+    const cur = curGraded(c);
+    const intervals = getIntervals(c);
+    const div = document.createElement('div');
+    div.className = 'ocard';
+    div.onclick = () => {
+      document.getElementById('q').value = c.pokemon;
+      applyF();
+      pick(c);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const intervalsHTML = intervals.map(iv => {
+      const d = pct(cur, iv.v);
+      const cls = parseFloat(d) >= 0 ? 'int-up' : 'int-dn';
+      const sign = parseFloat(d) >= 0 ? '+' : '';
+      return `<div class="interval">
+        <div class="int-label">${iv.label}</div>
+        <div class="int-val">${fmtF(iv.v)}</div>
+        <div class="int-delta ${cls}">${sign}${d}%</div>
+      </div>`;
+    }).join('');
+
+    const reasonSnippet = c.note.split('.')[0] + '.';
+
+    div.innerHTML = `
+      <div class="ocard-top">
+        <div class="ocard-img" id="oi_${c.id}"><span>${c.emoji}</span></div>
+        <div>
+          <div class="ocard-name">${c.name}</div>
+          <div class="ocard-set">${c.setName} · ${c.rarity}</div>
+        </div>
+      </div>
+      <div class="ocard-reason">${reasonSnippet}</div>
+      <div class="intervals">${intervalsHTML}</div>`;
+
+    fetchImg(c).then(src => {
+      const wrap = document.getElementById('oi_' + c.id);
+      if (wrap && src) {
+        const img = new Image();
+        img.style.cssText = 'width:100%;height:100%;object-fit:contain';
+        img.onerror = () => {};
+        img.onload = () => { wrap.innerHTML = ''; wrap.appendChild(img); };
+        img.src = src;
+      }
+    });
+
+    return div;
+  }
+
+  const bullGrid = document.getElementById('bullGrid');
+  bullGrid.innerHTML = '';
+  bulls.forEach(item => bullGrid.appendChild(buildCard(item)));
+
+  const bearGrid = document.getElementById('bearGrid');
+  bearGrid.innerHTML = '';
+  bears.forEach(item => bearGrid.appendChild(buildCard(item)));
+}
 </script>
 </body>
 </html>
