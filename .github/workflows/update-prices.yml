@@ -41,4 +41,4 @@ jobs:
           # Only commit if index.html actually changed
           git diff --staged --quiet \
             && echo "No price changes — nothing to commit." \
-            || (git commit -m "Auto-update prices $(date -u +%Y-%m-%d)" && git push)
+            || (git commit -m "Auto-update prices $(date -u +%Y-%m-%d)" && git push --force)
