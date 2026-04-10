@@ -1,0 +1,44 @@
+name: Update Card Prices
+
+# Runs daily at 9 AM Eastern (1 PM UTC).
+# You can also trigger it manually from the Actions tab at any time.
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+# Must have write permission to commit the updated index.html back
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch latest card prices and update index.html
+        run: python update_prices.py
+        env:
+          # Optional but recommended — add your free key in repo Settings → Secrets
+          POKEMON_TCG_API_KEY: ${{ secrets.POKEMON_TCG_API_KEY }}
+
+      - name: Commit and push if anything changed
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add index.html
+          # Only commit if index.html actually changed
+          git diff --staged --quiet \
+            && echo "No price changes — nothing to commit." \
+            || (git commit -m "Auto-update prices $(date -u +%Y-%m-%d)" && git push)
